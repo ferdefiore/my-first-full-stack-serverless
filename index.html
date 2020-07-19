@@ -5,9 +5,11 @@
         <link rel="stylesheet" href="main.css" type="text/css"/>
         <meta charset="utf-8">
     </head>
+    
     <body>
         <div id="app"></div>
     </body>
+
     <template id="login-template">
         <div class="form-main">
             <p class="form-title">Inicia sesion en Almuerzi</p>
@@ -20,7 +22,8 @@
                     <p>Contraseña</p>
                     <input id= "password" placeholder="Contraseña" type="password"/>
                 </div>
-                <button class="btn_enviar block">Enviar</button>
+                <button class="btn_enviar block" id="login_btn" type="button">Login</button>
+                <button class="btn_enviar block" id="register_btn" type="button">Not a user? Register</button>
             </form>
         </div>
     </template>
@@ -39,7 +42,11 @@
             <ul id="orders-list">
                 <p>Loading...</p>
             </ul>    
+            <form id="meals">
+                <button id="logout_btn" type="button">Salir</button>
+            </form>
         </div>
+        
     </template>
     <script src="main.js"></script>
 </html>

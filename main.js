@@ -1,6 +1,11 @@
+
 let mealsState = []
 let ruta = 'login' //login, register, orders
 let user = {}
+let email = ""
+let password = ""
+
+
 
 const stringToHTML = (s) => {
     const parser = new DOMParser()
@@ -18,7 +23,6 @@ const renderItem = (item) => {
         const mealsIdInput = document.getElementById('meals-id')
         mealsIdInput.value = item._id
     })
- 
     return element
 }
 
@@ -100,6 +104,12 @@ const renderApp = () => {
 const renderOrders = () => {
     const ordersView = document.getElementById('orders-view')
     document.getElementById('app').innerHTML = ordersView.innerHTML
+    document.getElementById('logout_btn').addEventListener('click',()=>{
+        localStorage.removeItem('token')
+        user = {}
+        alert('Sesion cerrada')
+        location.reload()
+    })
     inicializaFormulario()
     inicializaDatos()
 }
@@ -109,11 +119,10 @@ const renderLogin = () => {
     document.getElementById('app').innerHTML = loginTemplate.innerHTML
 
     const loginForm = document.getElementById('login-form')
-    loginForm.onsubmit = (event) => {
-        event.preventDefault()
-        const email = document.getElementById('email').value
-        const password = document.getElementById('password').value
 
+    document.getElementById('login_btn').addEventListener('click', () => {
+        email = document.getElementById('email').value
+        password = document.getElementById('password').value
         fetch('https://myfirstserverless.ferdefiore.vercel.app/api/auth/login',{
             method: 'POST',
             headers: {
@@ -138,12 +147,33 @@ const renderLogin = () => {
             .then(fetchedUser => {
                 localStorage.setItem('user', JSON.stringify(fetchedUser))
                 user = fetchedUser
+                alert('Logueado con exito, bienvenido!')
                 renderOrders()
             })
-    }
+    })
+
+    document.getElementById('register_btn').addEventListener('click',()=>{
+        email = document.getElementById('email').value
+        password = document.getElementById('password').value
+        console.log(email)
+        console.log(password)
+        if (email === "" || password === "") {
+            alert('Debe ingresar un mail y una constraseña')
+            return
+        }
+        fetch('https://myfirstserverless.ferdefiore.vercel.app/api/auth/register',{
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',                
+            },
+            body: JSON.stringify({email,password})
+        }).then(() => {
+            alert('Usuario registrado con exito, ahora puede logearse')
+        })
+    })
 }
 
-window.onload = () => {
+window.onload = () => {    
     renderApp()
 }
 
